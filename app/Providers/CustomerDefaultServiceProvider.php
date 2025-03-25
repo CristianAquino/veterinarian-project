@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use App\Models\Owner;
 use Illuminate\Support\ServiceProvider;
 
-class AdminUserServiceProvider extends ServiceProvider
+class CustomerDefaultServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -21,9 +21,9 @@ class AdminUserServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        if (!User::where('dni', '00000000')->exists()) {
+        if (!Owner::where('dni', '00000000')->exists()) {
             // create admin
-            User::create([
+            Owner::create([
                 'name' => 'cliente',
                 'surname' => 'generico',
                 'dni' => '00000000'
