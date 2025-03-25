@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('role', User::ROLE)->default(User::ROLE[0]);
             $table->string('speciality', 64)->nullable()->default(null);
             $table->string('phone')->nullable()->default(null);
-            $table->string('dni', 8);
+            $table->string('dni', 8)->unique();
         });
     }
 
@@ -26,14 +26,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
         Schema::table('users', function (Blueprint $table) {
-            //
             $table->dropColumn('surname');
             $table->dropColumn('role');
             $table->dropColumn('speciality');
             $table->dropColumn('phone');
-            $table->dropColumn('dni');
         });
     }
 };
