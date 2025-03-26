@@ -11,8 +11,8 @@ class OwnerDTO
         public readonly string $id,
         public readonly string $name,
         public readonly string $surname,
-        public readonly string $phone,
-        public readonly string $email,
+        public readonly ?string $phone,
+        public readonly ?string $email,
         public readonly string $dni,
     ) {
         //
