@@ -30,6 +30,9 @@ class PetSeeder extends Seeder
 
         foreach ($owners as $owner) {
             # code...
+            if ($owner->dni == '00000000') {
+                continue;
+            }
             $gender = $faker->randomElement(Pet::GENDER);
             $specie = $faker->randomElement(Pet::SPECIES);
             $breed = strtolower($specie) == 'cat'

@@ -21,13 +21,21 @@ class OwnerSeeder extends Seeder
 
         for ($i = 0; $i < 10; $i++) {
             # code...
-            Owner::create([
-                'name' => $faker->name(),
-                'surname' => $faker->lastName() . ' ' . $faker->lastName(),
-                'phone' => $faker->phoneNumber(),
-                'email' => $faker->unique()->safeEmail(),
-                'dni' => $faker->unique()->randomNumber(8, true)
-            ]);
+            if ($i == 0) {
+                Owner::create([
+                    'name' => 'cliente',
+                    'surname' => 'generico',
+                    'dni' => '00000000'
+                ]);
+            } else {
+                Owner::create([
+                    'name' => $faker->name(),
+                    'surname' => $faker->lastName() . ' ' . $faker->lastName(),
+                    'phone' => $faker->optional(0.8)->phoneNumber(),
+                    'email' => $faker->optional(0.8)->safeEmail(),
+                    'dni' => $faker->unique()->randomNumber(8, true)
+                ]);
+            }
         }
     }
 }

@@ -28,19 +28,30 @@ class EmployeeSeeder extends Seeder
 
         for ($i = 0; $i < 5; $i++) {
             # code...
-            $role = $i < 4 ? User::ROLE[1] : User::ROLE[0];
-            $speciality = $i < 4 ? $specialities[$i] : null;
+            if ($i == 0) {
+                User::create([
+                    'name' => 'administrator',
+                    'surname' => 'administrator',
+                    'email' => 'admin@admin.com',
+                    'password' => '12345678',
+                    'role' => User::ROLE[0],
+                    'dni' => '00000000'
+                ]);
+            } else {
+                $role = $i < 4 ? User::ROLE[2] : User::ROLE[1];
+                $speciality = $i < 4 ? $specialities[$i] : null;
 
-            User::create([
-                'name' => $faker->name(),
-                'surname' =>  $faker->lastName() . ' ' . $faker->lastName(),
-                'password' => '12345678',
-                'role' => $role,
-                'speciality' => $speciality,
-                'phone' => $faker->optional(0.8)->phoneNumber(),
-                'email' => $faker->unique()->safeEmail(),
-                'dni' => $faker->unique()->randomNumber(8, true)
-            ]);
+                User::create([
+                    'name' => $faker->name(),
+                    'surname' =>  $faker->lastName() . ' ' . $faker->lastName(),
+                    'password' => '12345678',
+                    'role' => $role,
+                    'speciality' => $speciality,
+                    'phone' => $faker->optional(0.8)->phoneNumber(),
+                    'email' => $faker->unique()->safeEmail(),
+                    'dni' => $faker->unique()->randomNumber(8, true)
+                ]);
+            }
         }
     }
 }

@@ -37,17 +37,21 @@ class AppointmentSeeder extends Seeder
 
         foreach ($owners as $owner) {
             # code...
-            $a = Appointment::create([
-                'reason' => $faker->text(64),
-                'date' => $faker->dateTimeBetween('now', '+' . $faker->numberBetween(1, 15) . 'days')->format('Y-m-d'),
-                'start_time' => $faker->randomElement($schedules),
-                'is_emergency' => false,
-                'status' => $faker->randomElement(Appointment::STATUS),
-                'owner_id' => $owner->id,
-                'user_id' => $faker->numberBetween(1, 4)
-            ]);
-            $service = $faker->randomElement($services);
-            $service->appointments()->attach($a);
+            if ($owner->dni == '00000000') {
+                continue;
+            } else {
+                $a = Appointment::create([
+                    'reason' => $faker->text(64),
+                    'date' => $faker->dateTimeBetween('now', '+' . $faker->numberBetween(1, 15) . 'days')->format('Y-m-d'),
+                    'start_time' => $faker->randomElement($schedules),
+                    'is_emergency' => false,
+                    'status' => $faker->randomElement(Appointment::STATUS),
+                    'owner_id' => $owner->id,
+                    'user_id' => $faker->numberBetween(2, 5)
+                ]);
+                $service = $faker->randomElement($services);
+                $service->appointments()->attach($a);
+            }
         }
     }
 }
