@@ -27,12 +27,13 @@ class PrescriptionSeeder extends Seeder
             $record = $faker->randomElement($records);
             for ($j = 0; $j < $faker->numberBetween(2, 5); $j++) {
                 # code...
+                $medication_name = $faker->optional(0.8)->sentence(4);
                 Prescription::create([
                     'dosage' => $faker->sentence(4),
-                    'medication_name' => $faker->optional(0.8)->sentence(4),
+                    'medication_name' => $medication_name,
                     'notes' => $faker->optional(0.8)->text(10),
                     'medical_record_id' => $record->id,
-                    'medication_id' => $faker->randomElement($medications)->id,
+                    'medication_id' => $medication_name ? null : $faker->randomElement($medications)->id,
                     'user_id' => $record->user_id,
                 ]);
             }
