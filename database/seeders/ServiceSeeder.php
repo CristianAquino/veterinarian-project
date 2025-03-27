@@ -30,7 +30,7 @@ class ServiceSeeder extends Seeder
         foreach ($services as $service) {
             Service::create([
                 'name' => $service,
-                'description' => $faker->text(48),
+                'description' => $faker->optional(0.8)->text(48),
                 'price' => $faker->randomFloat(2, 10, 100)
             ]);
         }
