@@ -14,13 +14,14 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->text('reason');
+            $table->text('reason')->nullable()->default(null);
             $table->date('date')->default(now());
+            $table->time('start_time')->default('08:00:00');
             $table->boolean('is_emergency')->default(false);
             $table->enum('status', Appointment::STATUS)
                 ->default(Appointment::STATUS[0]);
-            $table->foreignId('pet_id')
-                ->constrained('pets')
+            $table->foreignUuid('owner_id')
+                ->constrained('owners')
                 ->cascadeOnDelete();
             $table->foreignId('user_id')
                 ->constrained('users')

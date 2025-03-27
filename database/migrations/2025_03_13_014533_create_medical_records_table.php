@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('medical_records', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->text('diagnosis');
-            $table->text('treatment');
+            $table->text('treatment')->nullable()->default(null);
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->foreignId('pet_id')
                 ->constrained('pets')
                 ->onDelete('cascade');
