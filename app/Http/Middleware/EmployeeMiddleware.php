@@ -47,9 +47,11 @@ class EmployeeMiddleware
         if ($request->isMethod('post')) {
             $rules['email'][] = 'unique:users,email';
             $rules['dni'][] = 'unique:users,dni';
+            $rules['phone'][] = 'unique:users,phone';
         } elseif ($request->isMethod('put') || $request->isMethod('patch')) {
             $rules['email'][] = 'unique:users,email,' . $request->route('employee')->id;
             $rules['dni'][] = 'unique:users,dni,' . $request->route('employee')->id;
+            $rules['phone'][] = 'unique:users,phone' . $request->route('employee')->id;
         }
 
         $validate = Validator::make($request->all(), $rules);

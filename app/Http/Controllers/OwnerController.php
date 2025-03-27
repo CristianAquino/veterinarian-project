@@ -33,6 +33,7 @@ class OwnerController extends Controller
     public function store(Request $request)
     {
         //
+        // retornar el id para ser utilizado en pets
         dd($request->validated_data);
         // Owner::create($request->validated_data);
         // return redirect(route('employees.index'));
