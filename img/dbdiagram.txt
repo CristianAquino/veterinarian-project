@@ -1,0 +1,121 @@
+// forzar a registrar el dni pues sera el id unico
+// para identificar al cliente y sus mascotas
+Table pets {
+  id int [primary key]
+  name varchar(50)
+  species varchar(30)
+  breed varchar(50) [default:null]
+  age int
+  weight float
+  gender varchar(16)
+  owner_id uuid [not null, ref: > owners.id]
+}
+
+Table owners {
+  id uuid [primary key]
+  name varchar(100)
+  surname varchar(100)
+  phone varchar(20)
+  email varchar(100)
+  dni char(8) [unique]
+}
+
+Table employees {
+  id int [primary key]
+  name varchar(100)
+  surname varchar(100)
+  password varchar(32)
+  role varchar(50) // "Veterinario", "Recepcionista", "Asistente", etc.
+  specialty varchar(100) [default: null] // Solo si es veterinario
+  phone varchar(20)
+  email varchar(100)
+  dni char(8) [unique]
+  hire_date date
+}
+
+Table appointments {
+  id int [primary key]
+  owner_id uuid [not null, ref: > owners.id]
+  employee_id int [not null, ref: > employees.id]
+  date datetime
+  start_time time
+  reason text
+  is_emergency boolean [default: false]
+  status varchar(100) // enum("pendiente", "en_progreso", "completada", "cancelada") [default: "pendiente"]
+}
+
+Table appointment_service {
+  id int [primary key]
+  is_done bool [default:false]
+  appointment_id int [not null, ref: > appointments.id]
+  service_id int [not null, ref: > services.id]
+}
+
+Table medical_records {
+  id uuid [primary key]
+  pet_id int [not null, ref: > pets.id]
+  employee_id int [not null, ref: > employees.id]
+  diagnosis text
+  treatment text
+  date datetime
+}
+
+Table services {
+  id int [primary key]
+  name varchar(100)
+  description text
+  price decimal(10,2)
+}
+
+Table bills {
+  id uuid [primary key]
+  owner_id uuid [not null, ref: > owners.id]
+  total_amount decimal(10,2)
+  date datetime
+}
+
+Table bill_items {
+  id int [primary key]
+  bill_id uuid [not null, ref: > bills.id]
+  appointment_service_id int [ref: > appointment_service.id] // Para servicios
+  inventory_id int [ref: > inventory.id] // Para venta de medicamentos
+  quantity int [default: 1]
+  price decimal(10,2)
+  subtotal decimal(10,2)
+}
+
+Table medications {
+  id int [primary key]
+  name varchar(100)
+  description text
+  type varchar(50)
+}
+
+Table inventory {
+  id int [primary key]
+  medication_id int [not null, ref: > medications.id]
+  batch_number varchar(50)
+  quantity int
+  expiry_date date
+  expired boolean
+  unit_price decimal(10,2)
+}
+
+Table prescriptions {
+  id int [primary key]
+  medical_record_id uuid [not null, ref: > medical_records.id] // Relación con historial médico
+  medication_id int [ref: > medications.id] // Puede ser NULL si no está registrado
+  medication_name varchar(100) // Nombre manual si no está en el inventario
+  employee_id int [not null, ref: > employees.id] // Solo veterinarios pueden recetar
+  dosage varchar(50)  
+  date datetime
+  notes text
+}
+
+Table alerts {
+  id int [primary key]
+  inventory_id int [not null, ref: > inventory.id]
+  message text
+  created_at datetime
+  type varchar(20) // "info", "warning", "danger"
+}
