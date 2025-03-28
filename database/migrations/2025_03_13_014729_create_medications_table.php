@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('medications', function (Blueprint $table) {
             $table->id();
             $table->string('name', 32);
-            $table->text('description');
+            $table->text('description')->nullable()->default(null);
             $table->enum('type', Medication::TYPE)
                 ->default(Medication::TYPE[0]);
             $table->timestamps();

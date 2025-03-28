@@ -48,7 +48,6 @@ class OwnerMiddleware
         }
 
         $request->merge(['validated_data' => $validate->validated()]);
-
         return $next($request);
     }
 }

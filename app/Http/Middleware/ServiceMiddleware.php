@@ -25,13 +25,11 @@ class ServiceMiddleware
         $validate = Validator::make($request->all(), $rules);
 
         if ($validate->fails()) {
-            return response()->json($validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+            // necesario para tratar los valores en el front
+            return back()->withErrors($validate->errors())->withInput();
         }
 
-        $request->merge([
-            'validated_data' => $validate->validated()
-        ]);
-
+        $request->merge(['validated_data' => $validate->validated()]);
         return $next($request);
     }
 }

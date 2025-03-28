@@ -2,13 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Pet;
+use App\Models\Medication;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class PetMiddleware
+class MedicationMiddleware
 {
     /**
      * Handle an incoming request.
@@ -19,28 +19,17 @@ class PetMiddleware
     {
         $rules = [
             'name' => ['required', 'string', 'max:32'],
-            'species' => [
+            'description' => ['sometimes', 'string'],
+            'type' => [
                 'required',
                 'string',
-                function ($attribute, $value, $fail) {
-                    if (!in_array(strtolower($value), Pet::SPECIES)) {
-                        $fail('The species must be a valid species.');
+                function ($attribute, $value, $fail) use ($request) {
+
+                    if (!in_array(strtolower($value), Medication::TYPE)) {
+                        $fail('The type must be a valid type.');
                     }
-                },
-            ],
-            'breed' => ['sometimes', 'string'],
-            'age' => ['sometimes', 'integer', 'min:0'],
-            'weight' => ['sometimes', 'numeric', 'min:0'],
-            'gender' => [
-                'required',
-                'string',
-                function ($attribute, $value, $fail) {
-                    if (!in_array(strtolower($value), Pet::GENDER)) {
-                        $fail('The gender must be a valid genders.');
-                    }
-                },
-            ],
-            'owner_id' => ['required', 'integer', 'exists:owners,id']
+                }
+            ]
         ];
 
         $validate = Validator::make($request->all(), $rules);

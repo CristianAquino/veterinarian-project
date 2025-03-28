@@ -46,7 +46,6 @@ class AppointmentMiddleware
         }
 
         $request->merge(['validated_data' => $validate->validated()]);
-
         return $next($request);
     }
 }
