@@ -2,13 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Medication;
+use App\Models\Alert;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class MedicationMiddleware
+class AlertMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,25 +18,24 @@ class MedicationMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $rules = [
-            'name' => ['required', 'string', 'max:32'],
-            'description' => ['sometimes', 'string'],
+            'message' => ['required', 'string'],
             'type' => [
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
 
-                    if (!in_array(strtolower($value), Medication::TYPE)) {
-                        $fail('The type must be a valid type.');
+                    if (!in_array(strtolower($value), Alert::STATUS)) {
+                        $fail('The type must be a valid types.');
                     }
                 }
-            ]
+            ],
+            'inventory_id' => ['required', 'integer', 'exists:inventories,id'],
         ];
 
         $validate = Validator::make($request->all(), $rules);
 
         if ($validate->fails()) {
-            // necesario para tratar los valores en el front
-            return back()->withErrors($validate->errors())->withInput();
+            return response()->json($validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $request->merge(['validated_data' => $validate->validated()]);

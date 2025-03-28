@@ -23,7 +23,7 @@ class InventoryMiddleware
             'expiry_date' => [
                 'required',
                 'date',
-                function ($attribute, $value, $fail) use ($request) {
+                function ($attribute, $value, $fail) {
                     $date = DateTime::createFromFormat('Y-m-d', $value);
                     $currentDate = now();
                     $difference = $currentDate->diff($date);
