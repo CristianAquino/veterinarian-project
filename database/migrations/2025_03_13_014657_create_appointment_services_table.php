@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointment_services', function (Blueprint $table) {
+        Schema::create('appointment_service', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_done')->default(false);
             $table->foreignId('appointment_id')
                 ->constrained('appointments')
                 ->cascadeOnDelete();
@@ -29,7 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('appointment_services');
+        Schema::dropIfExists('appointment_service');
         Schema::enableForeignKeyConstraints();
     }
 };

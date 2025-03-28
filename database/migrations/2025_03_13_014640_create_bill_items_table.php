@@ -21,7 +21,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->foreignId('appointment_service_id')
                 ->nullable()
-                ->constrained('appointment_services')
+                ->constrained('appointment_service')
                 ->nullOnDelete()
                 ->default(null);
             $table->foreignId('inventory_id')
